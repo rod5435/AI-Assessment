@@ -561,9 +561,11 @@ def upload_csv():
                     if results:
                         flash(f'Successfully uploaded data for {company_name} and calculated AI scores for {len(results)} sections', 'success')
                     else:
-                        flash(f'Successfully uploaded data for {company_name}. Note: AI scores could not be calculated - check OpenAI API key.', 'warning')
+                        print(f"WARNING: No scores calculated for {company_name}. Results: {results}")
+                        flash(f'Successfully uploaded data for {company_name}. Note: AI scores could not be calculated - you can manually calculate scores from the company detail page.', 'warning')
                 except Exception as e:
-                    flash(f'Successfully uploaded data for {company_name}. Warning: Error calculating AI scores: {str(e)}', 'warning')
+                    print(f"ERROR: Failed to calculate scores for {company_name}: {str(e)}")
+                    flash(f'Successfully uploaded data for {company_name}. Warning: Error calculating AI scores: {str(e)}. You can manually calculate scores from the company detail page.', 'warning')
                 
                 return redirect(url_for('company_detail', company_id=company.id))
                 

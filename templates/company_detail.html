@@ -59,6 +59,10 @@
                        class="w-full bg-green-600 text-white px-4 py-2 rounded-md text-sm font-medium hover:bg-green-700 transition-colors text-center block">
                         📁 Upload CSV
                     </a>
+                    <a href="{{ url_for('calculate_scores', company_id=company.id) }}" 
+                       class="w-full bg-yellow-600 text-white px-4 py-2 rounded-md text-sm font-medium hover:bg-yellow-700 transition-colors text-center block">
+                        🧮 Calculate Scores
+                    </a>
                     <a href="{{ url_for('getwell_plans', company_id=company.id) }}" 
                        class="w-full bg-blue-600 text-white px-4 py-2 rounded-md text-sm font-medium hover:bg-blue-700 transition-colors text-center block">
                         📋 Get-Well Plans
