@@ -1,0 +1,51 @@
+Section,Question,Answer
+Section 1: Company Profile & Strategic Alignment,Company Name,Our internal R&D team consists of 20+ AI engineers using PyTorch and MLFlow.
+Section 1: Company Profile & Strategic Alignment,Annual Revenue,$250M - $500M
+Section 1: Company Profile & Strategic Alignment,Number of Employees,1000-2000
+Section 1: Company Profile & Strategic Alignment,Primary NAICS Codes,Our internal R&D team consists of 20+ AI engineers using PyTorch and MLFlow.
+Section 1: Company Profile & Strategic Alignment,"Size Classification (Small Business, Mid-Tier, Large Prime)",We are actively expanding our AI portfolio across multiple functions.
+Section 1: Company Profile & Strategic Alignment,"Primary Government Customers (DoD, IC, Civilian Agencies)",We are actively expanding our AI portfolio across multiple functions.
+Section 1: Company Profile & Strategic Alignment,What is your company's overall mission and how does AI fit into it?,Our internal R&D team consists of 20+ AI engineers using PyTorch and MLFlow.
+Section 1: Company Profile & Strategic Alignment,"Do you have a formal AI strategy or roadmap? If yes, please provide details or documents.",Our go-to-market strategy includes rapid POCs and pre-negotiated pilot contracts.
+Section 1: Company Profile & Strategic Alignment,Which of the following best describes your AI posture?,Our go-to-market strategy includes rapid POCs and pre-negotiated pilot contracts.
+Section 1: Company Profile & Strategic Alignment,"Is there a designated AI lead, chief AI officer, or equivalent executive role? If yes, provide name/title.",Our internal R&D team consists of 20+ AI engineers using PyTorch and MLFlow.
+Section 1: Company Profile & Strategic Alignment,Get-Well Plan – Section 1: Company Profile & Strategic Alignment,Investing in federated learning and privacy-preserving AI tools.
+Section 2: AI Capabilities & Technical Maturity,Which of the following AI/ML capabilities does your company currently possess or deliver?,We have delivered AI solutions under DoD contracts via the Tradewind OTA.
+Section 2: AI Capabilities & Technical Maturity,"Describe your internal AI development capability (e.g., number of AI/ML engineers, data scientists, tools used).",Currently exploring GenAI with OpenAI's GPT-4 and Anthropic Claude.
+Section 2: AI Capabilities & Technical Maturity,"Do you use open-source, proprietary, or government-provided models? Please specify examples.",We plan to double our AI staff and achieve IL5 compliance by Q2 next year.
+Section 2: AI Capabilities & Technical Maturity,What development frameworks and toolchains are most commonly used?,We lack structured AI governance but plan to implement an ethics framework.
+Section 2: AI Capabilities & Technical Maturity,Do you have a formal AI/ML lifecycle management system in place?,We have delivered AI solutions under DoD contracts via the Tradewind OTA.
+Section 2: AI Capabilities & Technical Maturity,"Do you conduct independent AI R&D? If yes, list notable efforts, funding sources, or publications.",We plan to double our AI staff and achieve IL5 compliance by Q2 next year.
+Section 2: AI Capabilities & Technical Maturity,Do you have a data infrastructure strategy?,Investing in federated learning and privacy-preserving AI tools.
+Section 2: AI Capabilities & Technical Maturity,Get-Well Plan – Section 2: AI Capabilities & Technical Maturity,Currently exploring GenAI with OpenAI's GPT-4 and Anthropic Claude.
+Section 3: Government AI Integration & Contract Performance,On which contracts have you delivered AI-enabled capabilities?,Currently exploring GenAI with OpenAI's GPT-4 and Anthropic Claude.
+Section 3: Government AI Integration & Contract Performance,Are you currently on or pursuing any AI-specific IDIQs/BPAs?,"We partner with AWS, NVIDIA, and several academic institutions."
+Section 3: Government AI Integration & Contract Performance,What security clearances or environments can your AI solutions operate within?,We have delivered AI solutions under DoD contracts via the Tradewind OTA.
+Section 3: Government AI Integration & Contract Performance,"Have you worked with government stakeholders on AI testing, evaluation, red teaming, or risk management?",Our internal R&D team consists of 20+ AI engineers using PyTorch and MLFlow.
+Section 3: Government AI Integration & Contract Performance,"How do you ensure explainability, fairness, and ethical AI in federal applications?",Our internal R&D team consists of 20+ AI engineers using PyTorch and MLFlow.
+Section 3: Government AI Integration & Contract Performance,"Are your AI tools or models accredited or certified for government use? If yes, list them.",Our internal R&D team consists of 20+ AI engineers using PyTorch and MLFlow.
+Section 3: Government AI Integration & Contract Performance,How does your company typically introduce AI capabilities to potential government clients?,Investing in federated learning and privacy-preserving AI tools.
+Section 3: Government AI Integration & Contract Performance,Do you use proof-of-concepts (POCs) or minimum viable products (MVPs) to demonstrate AI capabilities? Please provide examples.,Minimal progress on model management; developing capabilities in next 12 months.
+Section 3: Government AI Integration & Contract Performance,What is your go-to-market strategy for AI solutions in the public sector?,Minimal progress on model management; developing capabilities in next 12 months.
+Section 3: Government AI Integration & Contract Performance,Get-Well Plan – Section 3: Government AI Integration & Contract Performance,We have delivered AI solutions under DoD contracts via the Tradewind OTA.
+"Section 4: Partnerships, Ecosystem & Industry Engagement",Which AI hardware or cloud partners do you actively collaborate with?,"We partner with AWS, NVIDIA, and several academic institutions."
+"Section 4: Partnerships, Ecosystem & Industry Engagement",Are you a participant in any government or academic consortia on AI?,Our go-to-market strategy includes rapid POCs and pre-negotiated pilot contracts.
+"Section 4: Partnerships, Ecosystem & Industry Engagement",Do you have partnerships with any academic institutions for AI research or talent pipeline?,We plan to double our AI staff and achieve IL5 compliance by Q2 next year.
+"Section 4: Partnerships, Ecosystem & Industry Engagement","Do you collaborate with OpenAI, Anthropic, Cohere, or other foundation model companies?",We lack structured AI governance but plan to implement an ethics framework.
+"Section 4: Partnerships, Ecosystem & Industry Engagement",Are you partnered or subcontracted under any of the Big Primes for AI work?,Investing in federated learning and privacy-preserving AI tools.
+"Section 4: Partnerships, Ecosystem & Industry Engagement","Get-Well Plan – Section 4: Partnerships, Ecosystem & Industry Engagement","We partner with AWS, NVIDIA, and several academic institutions."
+"Section 5: AI Talent, Culture & Organizational Readiness",How many employees work in AI-related roles? Provide counts by function.,We lack structured AI governance but plan to implement an ethics framework.
+"Section 5: AI Talent, Culture & Organizational Readiness",Do you have AI-focused hiring goals or workforce development plans?,"We partner with AWS, NVIDIA, and several academic institutions."
+"Section 5: AI Talent, Culture & Organizational Readiness",Does your company offer AI training or upskilling programs internally?,We have delivered AI solutions under DoD contracts via the Tradewind OTA.
+"Section 5: AI Talent, Culture & Organizational Readiness",Do you have ethical guidelines or training in place for responsible AI use?,Currently exploring GenAI with OpenAI's GPT-4 and Anthropic Claude.
+"Section 5: AI Talent, Culture & Organizational Readiness",Is AI incorporated into your company's business development or proposal writing capabilities?,Our internal R&D team consists of 20+ AI engineers using PyTorch and MLFlow.
+"Section 5: AI Talent, Culture & Organizational Readiness","How is AI being integrated into internal business functions such as HR, marketing, finance, and operations?",We lack structured AI governance but plan to implement an ethics framework.
+"Section 5: AI Talent, Culture & Organizational Readiness","Is AI used in business development, capture, or proposal development processes? If so, how?",Investing in federated learning and privacy-preserving AI tools.
+"Section 5: AI Talent, Culture & Organizational Readiness","Is AI used in account planning or customer relationship strategies? If so, describe how it informs targeting, engagement, or pipeline development.",Currently exploring GenAI with OpenAI's GPT-4 and Anthropic Claude.
+"Section 5: AI Talent, Culture & Organizational Readiness","Get-Well Plan – Section 5: AI Talent, Culture & Organizational Readiness",Our internal R&D team consists of 20+ AI engineers using PyTorch and MLFlow.
+Section 6: Future Readiness & Differentiators,What emerging AI capabilities are you investing in?,Our internal R&D team consists of 20+ AI engineers using PyTorch and MLFlow.
+Section 6: Future Readiness & Differentiators,What do you see as your competitive advantage in the government AI market?,Our go-to-market strategy includes rapid POCs and pre-negotiated pilot contracts.
+Section 6: Future Readiness & Differentiators,What challenges are you facing in scaling or deploying AI within government programs?,We plan to double our AI staff and achieve IL5 compliance by Q2 next year.
+Section 6: Future Readiness & Differentiators,Where do you see your company in the AI GovCon ecosystem in the next 3-5 years?,Minimal progress on model management; developing capabilities in next 12 months.
+Section 6: Future Readiness & Differentiators,Are there any current or upcoming AI initiatives you'd like to highlight for strategic investment or collaboration?,We plan to double our AI staff and achieve IL5 compliance by Q2 next year.
+Section 6: Future Readiness & Differentiators,Get-Well Plan – Section 6: Future Readiness & Differentiators,Our go-to-market strategy includes rapid POCs and pre-negotiated pilot contracts.

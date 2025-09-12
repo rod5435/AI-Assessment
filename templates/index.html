@@ -1,0 +1,185 @@
+{% extends "base.html" %}
+
+{% block title %}Company Dashboard - GovCon AI Assessment{% endblock %}
+
+{% block content %}
+<div class="space-y-6">
+    <!-- Header -->
+    <div class="text-center">
+        <h1 class="text-4xl font-bold text-gray-900 mb-4">Company Dashboard</h1>
+        <p class="text-xl text-gray-600">AI Assessment Overview for Government Contractors</p>
+    </div>
+
+    <!-- Upload CSV Button -->
+    <div class="text-center mb-8">
+        <a href="{{ url_for('upload_csv') }}" 
+           class="inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-md text-white bg-gov-blue hover:bg-gov-dark focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gov-blue transition-colors">
+            📁 Upload New Assessment
+        </a>
+    </div>
+
+    <!-- Statistics -->
+    {% if companies %}
+        <div class="bg-white rounded-lg shadow-md p-6 mb-8">
+            <h3 class="text-lg font-semibold text-gray-900 mb-4">Assessment Statistics</h3>
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+                <div class="text-center">
+                    <div class="text-2xl font-bold text-gov-blue">{{ companies|length }}</div>
+                    <div class="text-sm text-gray-600">Total Companies</div>
+                </div>
+                <div class="text-center">
+                    <div class="text-2xl font-bold text-green-600">
+                        {{ companies|selectattr('overall_score', 'ne', none)|list|length }}
+                    </div>
+                    <div class="text-sm text-gray-600">Scored Companies</div>
+                </div>
+                <div class="text-center">
+                    {% set scored_companies = companies|selectattr('overall_score', 'ne', none)|list %}
+                    {% if scored_companies %}
+                        {% set total_score = scored_companies|map(attribute='overall_score')|sum %}
+                        <div class="text-2xl font-bold text-yellow-600">
+                            {{ "%.1f"|format(total_score / scored_companies|length) }}
+                        </div>
+                    {% else %}
+                        <div class="text-2xl font-bold text-gray-400">N/A</div>
+                    {% endif %}
+                    <div class="text-sm text-gray-600">Average Score</div>
+                </div>
+                <div class="text-center">
+                    <div class="text-2xl font-bold text-red-600">
+                        {{ companies|selectattr('score_color', 'equalto', 'red')|list|length }}
+                    </div>
+                    <div class="text-sm text-gray-600">Needs Improvement</div>
+                </div>
+            </div>
+        </div>
+    {% endif %}
+
+    <!-- Companies Table -->
+    <!-- DEBUG: Number of companies: {{ companies|length }} -->
+    {% if companies %}
+        <div class="bg-white rounded-lg shadow-md border border-gray-200 overflow-hidden">
+            <div class="px-6 py-4 border-b border-gray-200">
+                <h2 class="text-xl font-semibold text-gray-900">Assessed Companies</h2>
+            </div>
+            
+            <div class="overflow-x-auto">
+                <table class="min-w-full divide-y divide-gray-200">
+                    <thead class="bg-gray-50">
+                        <tr>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer hover:bg-gray-100 transition-colors" onclick="sortTable(0)">
+                                Company Name
+                                <span class="ml-1 text-gray-400">↕</span>
+                            </th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer hover:bg-gray-100 transition-colors" onclick="sortTable(1)">
+                                Annual Revenue
+                                <span class="ml-1 text-gray-400">↕</span>
+                            </th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer hover:bg-gray-100 transition-colors" onclick="sortTable(2)">
+                                Number of Employees
+                                <span class="ml-1 text-gray-400">↕</span>
+                            </th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer hover:bg-gray-100 transition-colors" onclick="sortTable(3)">
+                                Overall Score
+                                <span class="ml-1 text-gray-400">↕</span>
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody class="bg-white divide-y divide-gray-200">
+                        {% for company in companies %}
+                        <tr class="hover:bg-gray-50 transition-colors">
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <a href="{{ url_for('company_detail', company_id=company.id) }}" class="text-gov-blue hover:text-gov-dark font-medium">
+                                    {{ company.name }}
+                                </a>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                                {{ company.annual_revenue or 'N/A' }}
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                                {{ company.employee_count or 'N/A' }}
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                {% if company.overall_score %}
+                                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium score-{{ company.score_color }}">
+                                        {{ "%.1f"|format(company.overall_score) }}/10
+                                    </span>
+                                {% else %}
+                                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-500">
+                                        No Score
+                                    </span>
+                                {% endif %}
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    {% else %}
+        <!-- Empty State -->
+        <div class="text-center py-12">
+            <div class="mx-auto h-24 w-24 text-gray-400 mb-4">
+                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path>
+                </svg>
+            </div>
+            <h3 class="text-lg font-medium text-gray-900 mb-2">No companies found</h3>
+            <p class="text-gray-600 mb-6">Get started by uploading your first assessment CSV file.</p>
+            <a href="{{ url_for('upload_csv') }}" 
+               class="inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-md text-white bg-gov-blue hover:bg-gov-dark focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gov-blue transition-colors">
+                Upload First Assessment
+            </a>
+        </div>
+    {% endif %}
+</div>
+
+<script>
+    let sortDirection = 1; // 1 for ascending, -1 for descending
+    let lastSortedColumn = -1;
+
+    function sortTable(columnIndex) {
+        const table = document.querySelector('table');
+        const tbody = table.querySelector('tbody');
+        const rows = Array.from(tbody.querySelectorAll('tr'));
+        
+        // Reset sort direction if clicking a different column
+        if (lastSortedColumn !== columnIndex) {
+            sortDirection = 1;
+            lastSortedColumn = columnIndex;
+        } else {
+            sortDirection *= -1; // Toggle direction
+        }
+        
+        // Update sort indicators
+        const headers = table.querySelectorAll('th');
+        headers.forEach((header, index) => {
+            const span = header.querySelector('span');
+            if (index === columnIndex) {
+                span.textContent = sortDirection === 1 ? '↑' : '↓';
+            } else {
+                span.textContent = '↕';
+            }
+        });
+        
+        // Sort rows
+        rows.sort((a, b) => {
+            const aValue = a.cells[columnIndex].textContent.trim();
+            const bValue = b.cells[columnIndex].textContent.trim();
+            
+            // Handle numeric values (scores)
+            if (columnIndex === 3) { // Overall Score column
+                const aNum = parseFloat(aValue) || 0;
+                const bNum = parseFloat(bValue) || 0;
+                return (aNum - bNum) * sortDirection;
+            }
+            
+            // Handle text values
+            return aValue.localeCompare(bValue) * sortDirection;
+        });
+        
+        // Reorder rows in the table
+        rows.forEach(row => tbody.appendChild(row));
+    }
+</script>
+{% endblock %} 

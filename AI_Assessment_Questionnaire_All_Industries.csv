@@ -1,0 +1,163 @@
+﻿Section,Question,
+Section 1: Company Profile & Strategic Alignment,Company Name,
+,Primary NAICS Codes (Only GovCon),
+,Revenue,
+,Number of Employees,
+,"Company Type: GovCon, Healthcare, Finance or Industrial",
+,What is your company's overall mission and how does AI fit into it?,
+,"Do you have a formal AI strategy or roadmap? If yes, please provide details or documents.",
+,"Which of the following best describes your AI posture?           
+Exploratory – We are researching AI use cases but have not implemented any solutions.  
+Experimenting – We are piloting or prototyping AI solutions in limited areas.
+Developing – We have active AI development efforts and some early deployments.
+Operational – AI is deployed in production and used regularly in business processes.
+Strategic – AI is integrated into our core strategy and drives significant business value.
+Transformational – AI is a key driver of innovation and competitive advantage across the enterprise.",
+,"Is there a designated AI lead, chief AI officer, or equivalent executive role? If yes, provide name/title.",
+,Who is responsible to AI strategy within your organization?,
+,What % of your internal Executive/Management Team meetings are discussing AI initiatives?,
+,What business outcomes are you aiming to achieve with AI over the next 12–24 months?,
+,"Which of the following best describes your AI investment approach? Opportunistic, Strategic, Innovation-led, or Not yet defined",
+,In which areas does your leadership see the greatest risk or resistance to AI adoption?,
+,Get-Well Plan ‚ Section 1: Company Profile & Strategic Alignment,
+Section 2: AI Capabilities & Technical Maturity,"Which of the following AI/ML capabilities does your company currently possess or deliver? Check all that apply:
+	•Data engineering and preparation
+	•Machine learning model development
+	•Natural language processing (NLP)
+	•Computer vision
+	•Generative AI (e.g., LLMs, synthetic media)
+	•MLOps / model deployment and monitoring
+	•AI for predictive analytics and decision support
+	•AI integration into existing applications or workflows
+	•Responsible AI (ethics, fairness, explainability)
+	•Compliance with AI-related standards or frameworks (e.g., NIST, HIPAA, GDPR)",
+,"Describe your internal AI development capability (e.g., number of AI/ML engineers, data scientists, tools used).",
+,"Do you use open-source, proprietary, or government-provided models? Please specify examples.",
+,What development frameworks and toolchains are most commonly used?,
+,Do you have a formal AI/ML lifecycle management system in place?,
+,"Do you conduct independent AI R&D? If yes, list notable efforts, funding sources, or publications.",
+,How frequently do you use AI tools in your day-to-day work?,
+,"What types of AI tools do you personally use? (Check all that apply)
+	•	None of the above
+	•	ChatGPT
+	•	Microsoft Copilot
+	•	Grammarly
+	•	Salesforce Einstein
+	•	Perplexity
+	•	Custom AI tools
+	•	Other (please specify)",
+,"For which tasks do you most commonly use AI? Include Use Case Summary, if Applicable (Select all that apply + Fill in Blank for Use Case).
+	•	None of the above
+	•	Writing and content creation
+	•	Data analysis and visualization
+	•	Automating repetitive tasks
+	•	Generating code or scripts
+	•	Research and summarization
+	•	Translation or communication
+	•	Other (please specify; fill in the blank. Can be multiple)",
+,How confident are you in using AI tools effectively?,
+,"In which business functions is AI currently being used? Please select all that apply:
+	•	Finance
+	•	Operations
+	•	Marketing
+	•	HR
+	•	Customer Service
+	•	Engineering
+	•	Other (please specify)",
+,How do you currently measure the impact or success of your AI solutions?,
+,"Which stages of the AI lifecycle are you strongest in, and which need the most improvement?",
+,Do you follow any AI maturity model or framework to guide capability development?,
+,What AI capabilities do you consider essential to build or acquire in the next 12–24 months?,
+,Do you have a data infrastructure strategy?,
+,Get-Well Plan AI Section 2: AI Capabilities & Technical Maturity,
+Section 3: Government AI Integration & Contract Performance,On which contracts have you delivered AI-enabled capabilities?,
+,Are you currently on or pursuing any AI-specific IDIQs/BPAs?,
+,What security clearances or environments can your AI solutions operate within?,
+,"Have you worked with government stakeholders on AI testing, evaluation, red teaming, or risk management?",
+,"How do you ensure explainability, fairness, and ethical AI in federal applications?",
+,"Are your AI tools or models accredited or certified for government use? If yes, list them.",
+,How does your company typically introduce AI capabilities to potential government clients?,
+,Do you use proof-of-concepts (POCs) or minimum viable products (MVPs) to demonstrate AI capabilities? Please provide examples.,
+,"Are your customers inquiring about use of AI? If so, in what way?",
+,What risk of disruption does Generative AI pose?,
+,Are you partnered or subcontracted under any of the Big Primes for AI work?,
+,"How does your AI capability align with current government priorities (e.g., autonomy, ISR, digital workforce)?",
+,"Do you face procurement or regulatory barriers to AI adoption in government environments? If so, describe.",
+,"Are you participating in any cross-agency AI initiatives, testbeds, or R&D challenges?",
+,What is your go-to-market strategy for AI solutions in the public sector?,
+,Get-Well Plan AI Section 3: Government AI Integration & Contract Performance,
+Section 3: AI Adoption & Compliance in Healthcare Settings,On which healthcare initiatives or products have you delivered AI-enabled capabilities?,
+,"Are you currently involved in or pursuing AI-specific collaborations with healthcare providers, payers, or research institutions?",
+,"What compliance or regulatory environments can your AI solutions operate within? (e.g., HIPAA, FDA, ONC)",
+,"Have you worked with clinical or regulatory stakeholders on AI validation, risk assessment, or model governance?",
+,"How do you ensure explainability, fairness, and ethical AI in clinical or patient-facing applications?",
+,"Are your AI tools or models accredited, validated, or cleared for use in healthcare? If yes, please list them.",
+,How does your company typically introduce AI capabilities to potential healthcare clients?,
+,"Do you use clinical pilots, retrospective studies, or MVPs to demonstrate AI effectiveness? Please provide examples.",
+,"Are your healthcare customers inquiring about AI? If so, in what context? (e.g., diagnostics, workflow automation, population health)",
+,What risk or opportunity does Generative AI pose in healthcare settings?,
+,"Are you partnered with any major health systems, vendors, or academic institutions for AI initiatives?",
+,How are you addressing clinical validation and real-world evidence for AI in healthcare settings?,
+,What feedback have you received from clinical or operational users about your AI tools?,
+,"Are your AI tools integrated with any EHRs, medical devices, or digital health platforms?",
+,What is your go-to-market strategy for AI solutions in the healthcare industry?,
+,Get-Well Plan AI Section 3: AI Adoption & Compliance in Healthcare Settings,
+Section 3: AI Integration & Financial Services Delivery,"On which financial products, platforms, or services have you delivered AI-enabled capabilities?",
+,"Are you currently part of any AI-focused fintech accelerators, banking innovation labs, or regulatory sandboxes?",
+,"What regulatory environments can your AI solutions operate within? (e.g., SEC, FINRA, GDPR, PCI DSS)",
+,"Have you collaborated with internal risk, compliance, or audit teams on AI testing or governance?",
+,"How do you ensure explainability, fairness, and ethical AI in financial decision-making systems?",
+,"Are any of your AI models certified or validated by regulatory or industry bodies? If yes, list them.",
+,"How does your company introduce AI capabilities to banking, insurance, or capital markets clients?",
+,Do you use proof-of-concepts (POCs) or MVPs to demonstrate AI capabilities in financial workflows? Please provide examples.,
+,"Are your customers asking about AI adoption? In what areas? (e.g., fraud detection, credit scoring, trading, customer insights)",
+,What disruptive risks or opportunities do you associate with Generative AI in finance?,
+,Are you partnered with major financial institutions or consultancies for AI work?,
+,How is your company approaching model governance for AI in regulated financial workflows?,
+,"Are you using AI for real-time risk management or compliance monitoring? If yes, how?",
+,"What role do LLMs or Generative AI play in areas like customer communication, fraud detection, or compliance automation?",
+,What is your go-to-market strategy for AI offerings in the financial services sector?,
+,Get-Well Plan AI Section 3: AI Integration & Financial Services Delivery,
+"Section 4: Partnerships, Ecosystem & Industry Engagement",Which AI hardware or cloud partners do you actively collaborate with?,
+,Are you a participant in any government or academic consortia on AI?,
+,Do you have partnerships with any academic institutions for AI research or talent pipeline?,
+,"Do you collaborate with OpenAI, Anthropic, Cohere, or other foundation model companies?",
+,"Get-Well Plan AI Section 4: Partnerships, Ecosystem & Industry Engagement",
+"Section 5: AI Talent, Culture & Organizational Readiness",How many employees work in AI-related roles? Provide counts by function.,
+,Do you have AI-focused hiring goals or workforce development plans?,
+,Does your company offer AI training or upskilling programs internally?,
+,Do you have ethical guidelines or training in place for responsible AI use?,
+,Is AI incorporated into your company business development or proposal writing capabilities?,
+,"How is AI being integrated into internal business functions such as HR, marketing, finance, and operations?",
+,"Is AI used in any business development, sales, marketing, or proposal-related processes? If so, how?",
+,"Is AI used in account planning or customer relationship strategies? If so, describe how it informs targeting, engagement, or pipeline development.",
+,"Get-Well Plan AI Section 5: AI Talent, Culture & Organizational Readiness",
+Section 6: Future Readiness & Differentiators,What emerging AI capabilities are you investing in?,
+,What do you see as your company’s competitive advantage in the AI market you serve?,
+,What challenges are you facing in scaling or deploying AI within your target market or client base?,
+,Where do you see your company’s role in the AI ecosystem over the next 3–5 years?,
+,Are you planning on reducing your workforce and replace it with AI?,
+,Are there any current or upcoming AI initiatives you'd like to highlight for strategic investment or collaboration?,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,

@@ -1,0 +1,335 @@
+{% extends "base.html" %}
+
+{% block title %}{{ company.name }} - Assessment Details{% endblock %}
+
+{% block content %}
+<div class="space-y-6">
+    <!-- Header -->
+    <div class="flex items-center justify-between">
+        <div>
+            <h1 class="text-3xl font-bold text-gray-900">{{ company.name }}</h1>
+            <p class="text-gray-600">AI Assessment Details</p>
+        </div>
+        <div class="flex items-center space-x-4">
+            {% if overall_score %}
+                <span class="px-4 py-2 rounded-full text-lg font-bold score-{{ overall_color }}">
+                    Overall: {{ "%.1f"|format(overall_score) }}/10
+                </span>
+            {% endif %}
+            <a href="{{ url_for('index') }}" 
+               class="bg-gray-600 text-white px-4 py-2 rounded-md hover:bg-gray-700 transition-colors">
+                ← Back to Dashboard
+            </a>
+        </div>
+    </div>
+
+    <!-- Left Panel Navigation and Right Panel Content -->
+    <div class="grid grid-cols-1 lg:grid-cols-4 gap-6">
+        <!-- Left Panel -->
+        <div class="lg:col-span-1">
+            <div class="bg-white rounded-lg shadow-md p-6 sticky top-6">
+                <h3 class="text-lg font-semibold text-gray-900 mb-4">Navigation</h3>
+                
+                <!-- Section Navigation -->
+                <div class="space-y-2">
+                    {% for section in sections %}
+                        <button onclick="showSection('{{ section }}')" 
+                                class="section-btn w-full text-left px-4 py-3 rounded-md border transition-colors {% if loop.first %}bg-gov-blue text-white border-gov-blue{% else %}bg-white text-gray-700 border-gray-300 hover:bg-gray-50 hover:text-gray-900{% endif %}"
+                                data-section="{{ section }}">
+                            <div class="font-medium">{{ section.split(': ')[1] }}</div>
+                            {% set section_info = section_data[section] %}
+                            {% if 'Future Readiness' in section %}
+                                <div class="text-sm mt-1 text-gray-500">No scoring</div>
+                            {% elif section_info.score %}
+                                <div class="text-sm mt-1">
+                                    <span class="score-{{ section_info.color }} px-2 py-1 rounded text-xs">
+                                        {{ "%.1f"|format(section_info.score) }}/10
+                                    </span>
+                                </div>
+                            {% else %}
+                                <div class="text-sm mt-1 text-gray-500">No score</div>
+                            {% endif %}
+                        </button>
+                    {% endfor %}
+                </div>
+
+                <!-- Action Buttons -->
+                <div class="mt-6 pt-6 border-t border-gray-200 space-y-3">
+                    <a href="{{ url_for('upload_csv') }}" 
+                       class="w-full bg-green-600 text-white px-4 py-2 rounded-md text-sm font-medium hover:bg-green-700 transition-colors text-center block">
+                        📁 Upload CSV
+                    </a>
+                    <a href="{{ url_for('getwell_plans', company_id=company.id) }}" 
+                       class="w-full bg-blue-600 text-white px-4 py-2 rounded-md text-sm font-medium hover:bg-blue-700 transition-colors text-center block">
+                        📋 Get-Well Plans
+                    </a>
+                    <a href="{{ url_for('download_report', company_id=company.id) }}" 
+                       class="w-full bg-gray-600 text-white px-4 py-2 rounded-md text-sm font-medium hover:bg-gray-700 transition-colors text-center block">
+                        📄 Download Report
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Right Panel -->
+        <div class="lg:col-span-3">
+            {% for section in sections %}
+                <div id="section-{{ section }}" class="section-content {% if not loop.first %}hidden{% endif %}">
+                    <div class="bg-white rounded-lg shadow-md p-6">
+                        <!-- Section Header -->
+                        <div class="flex items-center justify-between mb-6">
+                            <h2 class="text-2xl font-bold text-gray-900">{{ section }}</h2>
+                            {% set section_info = section_data[section] %}
+                            {% if 'Future Readiness' in section %}
+                                <span class="px-4 py-2 rounded-full text-lg font-bold text-gray-500 bg-gray-100">
+                                    No Scoring
+                                </span>
+                            {% elif section_info.score %}
+                                <span class="px-4 py-2 rounded-full text-lg font-bold score-{{ section_info.color }}">
+                                    {{ "%.1f"|format(section_info.score) }}/10
+                                </span>
+                            {% else %}
+                                <span class="px-4 py-2 rounded-full text-lg font-bold score-gray">
+                                    No Score
+                                </span>
+                            {% endif %}
+                        </div>
+
+                        <!-- Assessments -->
+                        <div class="space-y-6">
+                            {% for assessment in section_info.assessments %}
+                                {% if 'Get-Well Plan' not in assessment.question %}
+                                    <div class="border border-gray-200 rounded-lg p-4">
+                                        <div class="mb-3">
+                                            <h4 class="font-semibold text-gray-900 mb-2">{{ assessment.question }}</h4>
+                                            {% if assessment.score and 'Future Readiness' not in section %}
+                                                <span class="inline-block px-2 py-1 rounded text-sm font-medium score-{{ section_info.color }} mb-2">
+                                                    Score: {{ "%.1f"|format(assessment.score) }}/10
+                                                </span>
+                                            {% endif %}
+                                        </div>
+                                        
+                                        <div class="space-y-2">
+                                            <label class="block text-sm font-medium text-gray-700">Answer:</label>
+                                            <textarea 
+                                                class="assessment-answer w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gov-blue focus:border-transparent"
+                                                rows="4"
+                                                data-assessment-id="{{ assessment.id }}"
+                                                placeholder="Enter your answer here...">{{ assessment.answer or '' }}</textarea>
+                                        </div>
+                                    </div>
+                                {% endif %}
+                            {% endfor %}
+
+                            <!-- Get-Well Plan for this section -->
+                            {% if section in getwell_plans_dict %}
+                                <div class="border border-green-200 rounded-lg p-4 bg-green-50">
+                                    <h4 class="font-semibold text-green-900 mb-2">Get-Well Plan</h4>
+                                    <div class="text-green-800">
+                                        {{ getwell_plans_dict[section].plan_text or 'No Get-Well Plan provided yet.' }}
+                                    </div>
+                                </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+// Section navigation
+function showSection(sectionName) {
+    // Hide all sections
+    document.querySelectorAll('.section-content').forEach(content => {
+        content.classList.add('hidden');
+    });
+    
+    // Show selected section
+    document.getElementById('section-' + sectionName).classList.remove('hidden');
+    
+    // Update button styles - clear all highlights first
+    document.querySelectorAll('.section-btn').forEach(btn => {
+        btn.classList.remove('bg-gov-blue', 'text-white', 'border-gov-blue');
+        btn.classList.add('bg-white', 'text-gray-700', 'border-gray-300');
+    });
+    
+    // Highlight selected button
+    const selectedBtn = document.querySelector(`[data-section="${sectionName}"]`);
+    if (selectedBtn) {
+        selectedBtn.classList.remove('bg-white', 'text-gray-700', 'border-gray-300');
+        selectedBtn.classList.add('bg-gov-blue', 'text-white', 'border-gov-blue');
+    }
+    
+    // Trigger score update for this section if it has answers
+    updateSectionScoreIfNeeded(sectionName);
+}
+
+// Auto-save assessment answers
+let saveTimeout;
+document.addEventListener('DOMContentLoaded', function() {
+    document.querySelectorAll('.assessment-answer').forEach(textarea => {
+        textarea.addEventListener('input', function() {
+            clearTimeout(saveTimeout);
+            saveTimeout = setTimeout(() => {
+                saveAssessment(this.dataset.assessmentId, this.value);
+            }, 1000); // Save after 1 second of inactivity
+        });
+        
+        // Also save on blur (when user clicks away)
+        textarea.addEventListener('blur', function() {
+            clearTimeout(saveTimeout);
+            saveAssessment(this.dataset.assessmentId, this.value);
+        });
+    });
+    
+    // Check if any sections need scores calculated
+    const sectionsWithoutScores = document.querySelectorAll('.section-btn .text-gray-500');
+    if (sectionsWithoutScores.length > 0) {
+        console.log('Some sections need scores calculated');
+    }
+});
+
+function updateSectionScoreIfNeeded(sectionName) {
+    // Get all textareas in the current section
+    const sectionContent = document.getElementById('section-' + sectionName);
+    if (!sectionContent) return;
+    
+    const textareas = sectionContent.querySelectorAll('.assessment-answer');
+    let hasAnswers = false;
+    
+    textareas.forEach(textarea => {
+        if (textarea.value && textarea.value.trim()) {
+            hasAnswers = true;
+        }
+    });
+    
+    // If section has answers but no score, trigger a score calculation
+    if (hasAnswers) {
+        const scoreElement = document.querySelector(`[data-section="${sectionName}"] .score-red, [data-section="${sectionName}"] .score-yellow, [data-section="${sectionName}"] .score-green, [data-section="${sectionName}"] .score-gray`);
+        if (!scoreElement || scoreElement.textContent.includes('No score')) {
+            console.log(`Triggering score calculation for ${sectionName}`);
+            // Trigger score calculation by updating the first textarea
+            const firstTextarea = textareas[0];
+            if (firstTextarea && firstTextarea.value) {
+                saveAssessment(firstTextarea.dataset.assessmentId, firstTextarea.value);
+            }
+        }
+    }
+    
+    // Update the section score display in the main content area
+    updateSectionScoreDisplay(sectionName);
+}
+
+function updateSectionScoreDisplay(sectionName) {
+    // Find the section score display in the main content
+    const sectionContent = document.getElementById('section-' + sectionName);
+    if (!sectionContent) return;
+    
+    const scoreDisplay = sectionContent.querySelector('.section-score-display');
+    if (scoreDisplay) {
+        // Get the score from the left panel
+        const leftPanelScore = document.querySelector(`[data-section="${sectionName}"] .score-red, [data-section="${sectionName}"] .score-yellow, [data-section="${sectionName}"] .score-green, [data-section="${sectionName}"] .score-gray`);
+        if (leftPanelScore) {
+            scoreDisplay.textContent = leftPanelScore.textContent;
+            scoreDisplay.className = `section-score-display ${leftPanelScore.className}`;
+        }
+    }
+}
+
+function saveAssessment(assessmentId, answer) {
+    // Show saving indicator
+    const textarea = document.querySelector(`[data-assessment-id="${assessmentId}"]`);
+    if (textarea) {
+        textarea.style.borderColor = '#3b82f6'; // Blue border while saving
+    }
+    
+    fetch('/api/update_assessment', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+            assessment_id: assessmentId,
+            answer: answer
+        })
+    })
+    .then(response => response.json())
+    .then(data => {
+        // Update section scores
+        updateSectionScores(data);
+        
+        // Reset border color
+        if (textarea) {
+            textarea.style.borderColor = '#d1d5db'; // Reset to gray
+        }
+    })
+    .catch(error => {
+        console.error('Error saving assessment:', error);
+        // Reset border color on error
+        if (textarea) {
+            textarea.style.borderColor = '#ef4444'; // Red border on error
+            setTimeout(() => {
+                textarea.style.borderColor = '#d1d5db';
+            }, 2000);
+        }
+    });
+}
+
+function updateSectionScores(data) {
+    // Update section score display
+    const currentSection = document.querySelector('.section-btn.bg-gov-blue');
+    if (currentSection) {
+        const sectionName = currentSection.dataset.section;
+        const scoreElement = currentSection.querySelector('.score-red, .score-yellow, .score-green, .score-gray');
+        
+        if (data.section_score !== null) {
+            const newScoreClass = `score-${data.section_color}`;
+            if (scoreElement) {
+                scoreElement.className = `${newScoreClass} px-2 py-1 rounded text-xs`;
+                scoreElement.textContent = `${data.section_score.toFixed(1)}/10`;
+            } else {
+                const newScoreElement = document.createElement('div');
+                newScoreElement.className = `text-sm mt-1`;
+                newScoreElement.innerHTML = `<span class="${newScoreClass} px-2 py-1 rounded text-xs">${data.section_score.toFixed(1)}/10</span>`;
+                currentSection.appendChild(newScoreElement);
+            }
+        }
+    }
+    
+    // Update overall score in header
+    if (data.overall_score !== null) {
+        const overallScoreElement = document.querySelector('.score-red, .score-yellow, .score-green, .score-gray');
+        if (overallScoreElement) {
+            const newOverallClass = `score-${data.overall_color}`;
+            overallScoreElement.className = `px-4 py-2 rounded-full text-lg font-bold ${newOverallClass}`;
+            overallScoreElement.textContent = `Overall: ${data.overall_score.toFixed(1)}/10`;
+        }
+    }
+    
+    // Update all section scores in left panel
+    document.querySelectorAll('.section-btn').forEach(btn => {
+        const sectionName = btn.dataset.section;
+        if (sectionName === data.section_name) {
+            // Update the current section's score
+            let scoreElement = btn.querySelector('.score-red, .score-yellow, .score-green, .score-gray');
+            if (data.section_score !== null) {
+                const newScoreClass = `score-${data.section_color}`;
+                if (scoreElement) {
+                    scoreElement.className = `${newScoreClass} px-2 py-1 rounded text-xs`;
+                    scoreElement.textContent = `${data.section_score.toFixed(1)}/10`;
+                } else {
+                    const newScoreElement = document.createElement('div');
+                    newScoreElement.className = `text-sm mt-1`;
+                    newScoreElement.innerHTML = `<span class="${newScoreClass} px-2 py-1 rounded text-xs">${data.section_score.toFixed(1)}/10</span>`;
+                    btn.appendChild(newScoreElement);
+                }
+            }
+        }
+    });
+}
+</script>
+{% endblock %} 

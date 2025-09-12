@@ -1,0 +1,220 @@
+{% extends "base.html" %}
+
+{% block title %}Upload CSV - GovCon AI Assessment{% endblock %}
+
+{% block content %}
+<div class="max-w-2xl mx-auto">
+    <div class="text-center mb-8">
+        <h1 class="text-3xl font-bold text-gray-900 mb-4">Upload Assessment CSV</h1>
+        <p class="text-gray-600">Upload a completed assessment questionnaire to populate the database</p>
+    </div>
+
+    <div class="bg-white rounded-lg shadow-md p-6">
+        <form method="POST" enctype="multipart/form-data" class="space-y-6" id="uploadForm">
+            <div>
+                <label for="file" class="block text-sm font-medium text-gray-700 mb-2">
+                    Select CSV File
+                </label>
+                <div class="mt-1 flex justify-center px-6 pt-5 pb-6 border-2 border-gray-300 border-dashed rounded-md hover:border-gov-blue transition-colors">
+                    <div class="space-y-1 text-center">
+                        <svg class="mx-auto h-12 w-12 text-gray-400" stroke="currentColor" fill="none" viewBox="0 0 48 48">
+                            <path d="M28 8H12a4 4 0 00-4 4v20m32-12v8m0 0v8a4 4 0 01-4 4H12a4 4 0 01-4-4v-4m32-4l-3.172-3.172a4 4 0 00-5.656 0L28 28M8 32l9.172-9.172a4 4 0 015.656 0L28 28m0 0l4 4m4-24h8m-4-4v8m-12 4h.02" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                        </svg>
+                        <div class="text-center">
+                            <input id="file" name="file" type="file" accept=".csv" required class="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-gov-blue file:text-white hover:file:bg-gov-dark">
+                        </div>
+                        <p class="text-xs text-gray-500">CSV files only</p>
+                        <div id="fileStatus" class="text-sm text-gray-500 mt-2"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="flex items-center justify-between">
+                <a href="{{ url_for('index') }}" 
+                   class="bg-gray-600 text-white px-4 py-2 rounded-md hover:bg-gray-700 transition-colors">
+                    Cancel
+                </a>
+                <button type="submit" id="submitBtn"
+                        class="bg-gov-blue text-white px-6 py-2 rounded-md hover:bg-gov-dark focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gov-blue transition-colors">
+                    Upload Assessment
+                </button>
+            </div>
+        </form>
+    </div>
+
+    <!-- Confirmation Modal -->
+    <div id="confirmationModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
+        <div class="bg-white p-8 rounded-lg shadow-lg text-center max-w-md mx-4">
+            <div class="text-yellow-500 mb-4">
+                <svg class="mx-auto h-12 w-12" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L3.732 16.5c-.77.833.192 2.5 1.732 2.5z"></path>
+                </svg>
+            </div>
+            <h3 class="text-lg font-semibold text-gray-900 mb-2">Company Already Exists</h3>
+            <p class="text-gray-600 mb-4">A company with this name already exists in the system. Uploading this assessment will replace all existing data for this company.</p>
+            <div class="flex space-x-3 justify-center">
+                <button id="cancelUpload" class="bg-gray-600 text-white px-4 py-2 rounded-md hover:bg-gray-700 transition-colors">
+                    Cancel
+                </button>
+                <button id="confirmUpload" class="bg-red-600 text-white px-4 py-2 rounded-md hover:bg-red-700 transition-colors">
+                    Replace Data
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Loading Overlay -->
+    <div id="loadingOverlay" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
+        <div class="bg-white p-8 rounded-lg shadow-lg text-center">
+            <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-gov-blue mx-auto mb-4"></div>
+            <h3 class="text-lg font-semibold text-gray-900 mb-2">Processing Assessment</h3>
+            <p class="text-gray-600">Please wait while we upload and analyze your data...</p>
+            <p class="text-sm text-gray-500 mt-2">This may take a few moments</p>
+        </div>
+    </div>
+        </form>
+    </div>
+
+    <!-- CSV Format Instructions -->
+    <div class="mt-8 bg-blue-50 border border-blue-200 rounded-lg p-6">
+        <h3 class="text-lg font-semibold text-blue-900 mb-4">📋 CSV Format Requirements</h3>
+        <div class="space-y-3 text-sm text-blue-800">
+            <p><strong>Required columns:</strong> Section, Question, Answer</p>
+            <p><strong>File format:</strong> CSV (Comma-separated values)</p>
+            <p><strong>Encoding:</strong> UTF-8</p>
+            <p><strong>Maximum file size:</strong> 16MB</p>
+        </div>
+        
+        <div class="mt-4">
+            <h4 class="font-medium text-blue-900 mb-2">Example CSV structure:</h4>
+            <div class="bg-white border border-blue-200 rounded p-3 text-xs font-mono">
+                Section,Question,Answer<br>
+                Section 1: Company Profile & Strategic Alignment,Company Name,Acme Corporation<br>
+                Section 1: Company Profile & Strategic Alignment,Primary NAICS Codes,541330<br>
+                Section 1: Company Profile & Strategic Alignment,What is your company's overall mission and how does AI fit into it?,Our mission is to deliver innovative AI solutions to government agencies...
+            </div>
+        </div>
+    </div>
+
+    <!-- Download Template -->
+    <div class="mt-6 text-center">
+        <p class="text-gray-600 mb-2">Don't have a CSV file? Download the template:</p>
+        <a href="{{ url_for('download_template') }}" 
+           class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-gov-blue bg-blue-100 hover:bg-blue-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gov-blue transition-colors">
+            📥 Download Template
+        </a>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+const fileInput = document.getElementById('file');
+const fileStatus = document.getElementById('fileStatus');
+const uploadForm = document.getElementById('uploadForm');
+const loadingOverlay = document.getElementById('loadingOverlay');
+const submitBtn = document.getElementById('submitBtn');
+
+fileInput.addEventListener('change', (e) => {
+    if (e.target.files.length > 0) {
+        const file = e.target.files[0];
+        fileStatus.textContent = `Selected: ${file.name}`;
+        fileStatus.className = 'text-sm text-green-500 mt-2';
+    } else {
+        fileStatus.textContent = '';
+        fileStatus.className = 'text-sm text-gray-500 mt-2';
+    }
+});
+
+uploadForm.addEventListener('submit', (e) => {
+    // Prevent default form submission
+    e.preventDefault();
+    
+    // Check if company exists first
+    const formData = new FormData(uploadForm);
+    fetch(window.location.href, {
+        method: 'POST',
+        body: formData
+    }).then(response => {
+        if (response.redirected) {
+            // Success - redirect to company page
+            window.location.href = response.url;
+        } else {
+            // Check if response indicates company exists
+            response.text().then(text => {
+                if (text.includes('COMPANY_EXISTS:')) {
+                    // Extract company name from response
+                    const companyName = text.split('COMPANY_EXISTS:')[1].split('\n')[0];
+                    showConfirmationModal(companyName, formData);
+                } else {
+                    // Other response - reload page
+                    window.location.reload();
+                }
+            });
+        }
+    }).catch(error => {
+        console.error('Upload error:', error);
+        alert('Error uploading file. Please try again.');
+    });
+});
+
+function showConfirmationModal(companyName, formData) {
+    const modal = document.getElementById('confirmationModal');
+    const confirmBtn = document.getElementById('confirmUpload');
+    const cancelBtn = document.getElementById('cancelUpload');
+    
+    // Update modal text with company name
+    const modalText = modal.querySelector('p');
+    modalText.textContent = `A company named "${companyName}" already exists in the system. Uploading this assessment will replace all existing data for this company.`;
+    
+    // Show modal
+    modal.classList.remove('hidden');
+    
+    // Handle confirm button
+    confirmBtn.onclick = () => {
+        modal.classList.add('hidden');
+        performUpload(formData, true); // true = confirmed replacement
+    };
+    
+    // Handle cancel button
+    cancelBtn.onclick = () => {
+        modal.classList.add('hidden');
+    };
+}
+
+function performUpload(formData, confirmed = false) {
+    // Show loading overlay
+    loadingOverlay.classList.remove('hidden');
+    
+    // Disable submit button
+    submitBtn.disabled = true;
+    submitBtn.textContent = 'Uploading...';
+    submitBtn.className = 'bg-gray-400 text-white px-6 py-2 rounded-md cursor-not-allowed';
+    
+    // Add confirmation flag to form data
+    if (confirmed) {
+        formData.append('confirmed', 'true');
+    }
+    
+    // Submit the form programmatically
+    fetch(window.location.href, {
+        method: 'POST',
+        body: formData
+    }).then(response => {
+        if (response.redirected) {
+            window.location.href = response.url;
+        } else {
+            window.location.reload();
+        }
+    }).catch(error => {
+        console.error('Upload error:', error);
+        // Hide loading overlay on error
+        loadingOverlay.classList.add('hidden');
+        submitBtn.disabled = false;
+        submitBtn.textContent = 'Upload Assessment';
+        submitBtn.className = 'bg-gov-blue text-white px-6 py-2 rounded-md hover:bg-gov-dark focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gov-blue transition-colors';
+        alert('Error uploading file. Please try again.');
+    });
+}
+</script>
+{% endblock %} 
