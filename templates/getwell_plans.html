@@ -39,7 +39,7 @@
                     <div class="prose prose-sm max-w-none">
                         {% if plan.plan_text %}
                             <div class="text-gray-700 leading-relaxed">
-                                {{ plan.plan_text|replace('\n', '<br>')|safe }}
+                                {{ markdown_to_html(plan.plan_text) | safe }}
                             </div>
                         {% else %}
                             <div class="text-gray-500 italic">

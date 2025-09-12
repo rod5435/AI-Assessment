@@ -9,6 +9,7 @@ from datetime import datetime
 import openai
 from dotenv import load_dotenv
 import config
+import markdown
 
 # Load environment variables
 load_dotenv()
@@ -28,6 +29,23 @@ db = SQLAlchemy(app)
 
 # Configure OpenAI
 openai.api_key = os.getenv('OPENAI_API_KEY')
+
+# Add custom Jinja2 filter for markdown conversion
+@app.template_filter('markdown')
+def markdown_filter(text):
+    """Convert markdown text to HTML"""
+    if not text:
+        return ''
+    return markdown.markdown(text, extensions=['nl2br', 'fenced_code'])
+
+# Add markdown function to template context
+@app.context_processor
+def utility_processor():
+    def markdown_to_html(text):
+        if not text:
+            return ''
+        return markdown.markdown(text, extensions=['nl2br', 'fenced_code'])
+    return dict(markdown_to_html=markdown_to_html)
 
 # Database Models
 class Company(db.Model):
