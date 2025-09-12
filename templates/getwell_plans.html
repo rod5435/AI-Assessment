@@ -125,83 +125,41 @@
     <div class="mt-8 bg-white rounded-lg shadow-md p-6">
         <h3 class="text-lg font-semibold text-gray-900 mb-4">Assessment Sections Overview</h3>
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-            <div class="border border-gray-200 rounded-lg p-4 {% if section_scores['Section 1: Company Profile & Strategic Alignment'].score and section_scores['Section 1: Company Profile & Strategic Alignment'].score <= 3 %}border-red-200 bg-red-50{% elif section_scores['Section 1: Company Profile & Strategic Alignment'].score and section_scores['Section 1: Company Profile & Strategic Alignment'].score <= 6 %}border-yellow-200 bg-yellow-50{% endif %}">
-                <div class="flex items-center justify-between mb-2">
-                    <h4 class="font-medium text-gray-900">Section 1: Company Profile & Strategic Alignment</h4>
-                    {% if section_scores['Section 1: Company Profile & Strategic Alignment'].score %}
-                        <span class="px-2 py-1 bg-{{ section_scores['Section 1: Company Profile & Strategic Alignment'].color }}-100 text-{{ section_scores['Section 1: Company Profile & Strategic Alignment'].color }}-800 text-xs font-medium rounded-full">
-                            {{ "%.1f"|format(section_scores['Section 1: Company Profile & Strategic Alignment'].score) }}/10
-                        </span>
-                    {% else %}
-                        <span class="px-2 py-1 bg-gray-100 text-gray-500 text-xs font-medium rounded-full">No Score</span>
-                    {% endif %}
+            {% for section_name, section_data in section_scores.items() %}
+                <div class="border border-gray-200 rounded-lg p-4 {% if section_data.score and section_data.score <= 3 %}border-red-200 bg-red-50{% elif section_data.score and section_data.score <= 6 %}border-yellow-200 bg-yellow-50{% endif %}">
+                    <div class="flex items-center justify-between mb-2">
+                        <h4 class="font-medium text-gray-900">{{ section_name }}</h4>
+                        {% if section_data.score %}
+                            <span class="px-2 py-1 bg-{{ section_data.color }}-100 text-{{ section_data.color }}-800 text-xs font-medium rounded-full">
+                                {{ "%.1f"|format(section_data.score) }}/10
+                            </span>
+                        {% else %}
+                            <span class="px-2 py-1 bg-gray-100 text-gray-500 text-xs font-medium rounded-full">No Score</span>
+                        {% endif %}
+                    </div>
+                    <p class="text-sm text-gray-600">
+                        {% if 'Company Profile' in section_name %}
+                            Strategic clarity, executive sponsorship, AI roadmap integration
+                        {% elif 'AI Capabilities' in section_name %}
+                            AI/ML capabilities, talent, tooling, lifecycle practices
+                        {% elif 'Government AI Integration' in section_name %}
+                            Federal AI delivery, security clearances, compliance
+                        {% elif 'AI Adoption & Compliance in Healthcare' in section_name %}
+                            Healthcare AI compliance, clinical validation, patient safety
+                        {% elif 'AI Integration & Financial Services' in section_name %}
+                            Financial AI compliance, risk management, regulatory adherence
+                        {% elif 'Partnerships' in section_name %}
+                            Cloud partnerships, academic collaboration, ecosystem engagement
+                        {% elif 'AI Talent' in section_name %}
+                            AI roles, training, ethics, internal AI usage
+                        {% elif 'Future Readiness' in section_name %}
+                            Emerging AI capabilities, competitive advantages, scaling challenges
+                        {% else %}
+                            Assessment section
+                        {% endif %}
+                    </p>
                 </div>
-                <p class="text-sm text-gray-600">Strategic clarity, executive sponsorship, AI roadmap integration</p>
-            </div>
-            
-            <div class="border border-gray-200 rounded-lg p-4 {% if section_scores['Section 2: AI Capabilities & Technical Maturity'].score and section_scores['Section 2: AI Capabilities & Technical Maturity'].score <= 3 %}border-red-200 bg-red-50{% elif section_scores['Section 2: AI Capabilities & Technical Maturity'].score and section_scores['Section 2: AI Capabilities & Technical Maturity'].score <= 6 %}border-yellow-200 bg-yellow-50{% endif %}">
-                <div class="flex items-center justify-between mb-2">
-                    <h4 class="font-medium text-gray-900">Section 2: AI Capabilities & Technical Maturity</h4>
-                    {% if section_scores['Section 2: AI Capabilities & Technical Maturity'].score %}
-                        <span class="px-2 py-1 bg-{{ section_scores['Section 2: AI Capabilities & Technical Maturity'].color }}-100 text-{{ section_scores['Section 2: AI Capabilities & Technical Maturity'].color }}-800 text-xs font-medium rounded-full">
-                            {{ "%.1f"|format(section_scores['Section 2: AI Capabilities & Technical Maturity'].score) }}/10
-                        </span>
-                    {% else %}
-                        <span class="px-2 py-1 bg-gray-100 text-gray-500 text-xs font-medium rounded-full">No Score</span>
-                    {% endif %}
-                </div>
-                <p class="text-sm text-gray-600">AI/ML capabilities, talent, tooling, lifecycle practices</p>
-            </div>
-            
-            <div class="border border-gray-200 rounded-lg p-4 {% if section_scores['Section 3: Government AI Integration & Contract Performance'].score and section_scores['Section 3: Government AI Integration & Contract Performance'].score <= 3 %}border-red-200 bg-red-50{% elif section_scores['Section 3: Government AI Integration & Contract Performance'].score and section_scores['Section 3: Government AI Integration & Contract Performance'].score <= 6 %}border-yellow-200 bg-yellow-50{% endif %}">
-                <div class="flex items-center justify-between mb-2">
-                    <h4 class="font-medium text-gray-900">Section 3: Government AI Integration & Contract Performance</h4>
-                    {% if section_scores['Section 3: Government AI Integration & Contract Performance'].score %}
-                        <span class="px-2 py-1 bg-{{ section_scores['Section 3: Government AI Integration & Contract Performance'].color }}-100 text-{{ section_scores['Section 3: Government AI Integration & Contract Performance'].color }}-800 text-xs font-medium rounded-full">
-                            {{ "%.1f"|format(section_scores['Section 3: Government AI Integration & Contract Performance'].score) }}/10
-                        </span>
-                    {% else %}
-                        <span class="px-2 py-1 bg-gray-100 text-gray-500 text-xs font-medium rounded-full">No Score</span>
-                    {% endif %}
-                </div>
-                <p class="text-sm text-gray-600">Federal AI delivery, security clearances, compliance</p>
-            </div>
-            
-            <div class="border border-gray-200 rounded-lg p-4 {% if section_scores['Section 4: Partnerships, Ecosystem & Industry Engagement'].score and section_scores['Section 4: Partnerships, Ecosystem & Industry Engagement'].score <= 3 %}border-red-200 bg-red-50{% elif section_scores['Section 4: Partnerships, Ecosystem & Industry Engagement'].score and section_scores['Section 4: Partnerships, Ecosystem & Industry Engagement'].score <= 6 %}border-yellow-200 bg-yellow-50{% endif %}">
-                <div class="flex items-center justify-between mb-2">
-                    <h4 class="font-medium text-gray-900">Section 4: Partnerships, Ecosystem & Industry Engagement</h4>
-                    {% if section_scores['Section 4: Partnerships, Ecosystem & Industry Engagement'].score %}
-                        <span class="px-2 py-1 bg-{{ section_scores['Section 4: Partnerships, Ecosystem & Industry Engagement'].color }}-100 text-{{ section_scores['Section 4: Partnerships, Ecosystem & Industry Engagement'].color }}-800 text-xs font-medium rounded-full">
-                            {{ "%.1f"|format(section_scores['Section 4: Partnerships, Ecosystem & Industry Engagement'].score) }}/10
-                        </span>
-                    {% else %}
-                        <span class="px-2 py-1 bg-gray-100 text-gray-500 text-xs font-medium rounded-full">No Score</span>
-                    {% endif %}
-                </div>
-                <p class="text-sm text-gray-600">Cloud partnerships, academic collaboration, prime/sub relationships</p>
-            </div>
-            
-            <div class="border border-gray-200 rounded-lg p-4 {% if section_scores['Section 5: AI Talent, Culture & Organizational Readiness'].score and section_scores['Section 5: AI Talent, Culture & Organizational Readiness'].score <= 3 %}border-red-200 bg-red-50{% elif section_scores['Section 5: AI Talent, Culture & Organizational Readiness'].score and section_scores['Section 5: AI Talent, Culture & Organizational Readiness'].score <= 6 %}border-yellow-200 bg-yellow-50{% endif %}">
-                <div class="flex items-center justify-between mb-2">
-                    <h4 class="font-medium text-gray-900">Section 5: AI Talent, Culture & Organizational Readiness</h4>
-                    {% if section_scores['Section 5: AI Talent, Culture & Organizational Readiness'].score %}
-                        <span class="px-2 py-1 bg-{{ section_scores['Section 5: AI Talent, Culture & Organizational Readiness'].color }}-100 text-{{ section_scores['Section 5: AI Talent, Culture & Organizational Readiness'].color }}-800 text-xs font-medium rounded-full">
-                            {{ "%.1f"|format(section_scores['Section 5: AI Talent, Culture & Organizational Readiness'].score) }}/10
-                        </span>
-                    {% else %}
-                        <span class="px-2 py-1 bg-gray-100 text-gray-500 text-xs font-medium rounded-full">No Score</span>
-                    {% endif %}
-                </div>
-                <p class="text-sm text-gray-600">AI roles, training, ethics, internal AI usage</p>
-            </div>
-            
-            <div class="border border-gray-200 rounded-lg p-4">
-                <div class="flex items-center justify-between mb-2">
-                    <h4 class="font-medium text-gray-900">Section 6: Future Readiness & Differentiators</h4>
-                    <span class="px-2 py-1 bg-gray-100 text-gray-500 text-xs font-medium rounded-full">No Scoring</span>
-                </div>
-                <p class="text-sm text-gray-600">Emerging AI capabilities, competitive advantages, scaling challenges</p>
-            </div>
+            {% endfor %}
         </div>
     </div>
 </div>
