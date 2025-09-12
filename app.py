@@ -180,9 +180,57 @@ def generate_ai_score(section, responses):
         print(f"Error generating AI score: {e}")
         return None
 
+def generate_ai_getwell_plan(section, responses, score, company_type):
+    """Generate AI Get-Well Plan using OpenAI"""
+    try:
+        # Get the appropriate prompt from config
+        getwell_prompts = {
+            'Section 1: Company Profile & Strategic Alignment': config.GETWELL_SECTION_1_PROMPT,
+            'Section 2: AI Capabilities & Technical Maturity': config.GETWELL_SECTION_2_PROMPT,
+            'Section 3: Government AI Integration & Contract Performance': config.GETWELL_SECTION_3_GOVCON_PROMPT,
+            'Section 3: AI Adoption & Compliance in Healthcare Settings': config.GETWELL_SECTION_3_HEALTHCARE_PROMPT,
+            'Section 3: AI Integration & Financial Services Delivery': config.GETWELL_SECTION_3_FINANCE_PROMPT,
+            'Section 4: Partnerships, Ecosystem & Industry Engagement': config.GETWELL_SECTION_4_PROMPT,
+            'Section 5: AI Talent, Culture & Organizational Readiness': config.GETWELL_SECTION_5_PROMPT,
+            'Section 6: Future Readiness & Differentiators': config.GETWELL_SECTION_6_PROMPT
+        }
+        
+        prompt_config = getwell_prompts.get(section)
+        if not prompt_config:
+            return None
+        
+        # Format responses for the prompt
+        formatted_responses = "\n".join([f"Q: {q}\nA: {a}" for q, a in responses])
+        
+        # Replace placeholders in the prompt
+        prompt = prompt_config['prompt'].replace('{{responses}}', formatted_responses)
+        prompt = prompt.replace('{{score}}', str(score))
+        prompt = prompt.replace('{{company_type}}', company_type or 'Unknown')
+        
+        response = openai.ChatCompletion.create(
+            model="gpt-4o-mini",
+            messages=[
+                {"role": "system", "content": "You are an expert AI consultant specializing in strategic planning and organizational development. Provide comprehensive, actionable Get-Well Plans with specific recommendations, timelines, and success metrics."},
+                {"role": "user", "content": prompt}
+            ],
+            temperature=0.4,
+            max_tokens=1500
+        )
+        
+        # Return the generated Get-Well Plan
+        return response.choices[0].message.content.strip()
+        
+    except Exception as e:
+        print(f"Error generating AI Get-Well Plan: {e}")
+        return None
+
 def calculate_all_section_scores(company_id):
     """Calculate AI scores for all sections of a company (excluding Future Readiness)"""
     sections = get_company_sections(company_id)
+    
+    # Get company information for Get-Well Plan generation
+    company = Company.query.get(company_id)
+    company_type = company.company_type if company else None
     
     results = {}
     
@@ -204,6 +252,31 @@ def calculate_all_section_scores(company_id):
                 for a in assessments:
                     if 'Get-Well Plan' not in a.question:
                         a.score = score
+                
+                # Generate AI Get-Well Plan
+                print(f"  Generating Get-Well Plan for {section}...")
+                getwell_plan = generate_ai_getwell_plan(section, responses, score, company_type)
+                
+                if getwell_plan:
+                    # Update or create Get-Well Plan
+                    existing_plan = GetWellPlan.query.filter_by(
+                        company_id=company_id, 
+                        section=section
+                    ).first()
+                    
+                    if existing_plan:
+                        existing_plan.plan_text = getwell_plan
+                    else:
+                        new_plan = GetWellPlan(
+                            company_id=company_id,
+                            section=section,
+                            plan_text=getwell_plan
+                        )
+                        db.session.add(new_plan)
+                    
+                    print(f"  Get-Well Plan generated successfully")
+                else:
+                    print(f"  Failed to generate Get-Well Plan")
                 
                 results[section] = score
                 print(f"  Score: {score}/10")
@@ -299,6 +372,35 @@ def update_assessment():
             for a in section_assessments:
                 if 'Get-Well Plan' not in a.question:
                     a.score = new_score
+            
+            # Generate new AI Get-Well Plan
+            company = Company.query.get(assessment.company_id)
+            company_type = company.company_type if company else None
+            
+            print(f"Generating Get-Well Plan for {assessment.section}...")
+            getwell_plan = generate_ai_getwell_plan(assessment.section, responses, new_score, company_type)
+            
+            if getwell_plan:
+                # Update or create Get-Well Plan
+                existing_plan = GetWellPlan.query.filter_by(
+                    company_id=assessment.company_id, 
+                    section=assessment.section
+                ).first()
+                
+                if existing_plan:
+                    existing_plan.plan_text = getwell_plan
+                else:
+                    new_plan = GetWellPlan(
+                        company_id=assessment.company_id,
+                        section=assessment.section,
+                        plan_text=getwell_plan
+                    )
+                    db.session.add(new_plan)
+                
+                print(f"Get-Well Plan updated successfully")
+            else:
+                print(f"Failed to generate Get-Well Plan")
+            
             print(f"Updated {assessment.section} score to {new_score}/10")
         else:
             print(f"Failed to generate score for {assessment.section}")
