@@ -134,23 +134,37 @@ uploadForm.addEventListener('submit', (e) => {
     const formData = new FormData(uploadForm);
     fetch(window.location.href, {
         method: 'POST',
-        body: formData
+        body: formData,
+        redirect: 'follow'  // Follow redirects automatically
     }).then(response => {
-        if (response.redirected) {
-            // Success - redirect to company page
-            window.location.href = response.url;
+        // Check if we got a successful response (200-299) or redirect (300-399)
+        if (response.ok || response.status >= 300) {
+            // If it's a redirect, get the final URL
+            if (response.redirected) {
+                window.location.href = response.url;
+            } else {
+                // Check if response contains redirect information
+                response.text().then(text => {
+                    if (text.includes('redirected automatically to the target URL')) {
+                        // Extract the redirect URL from the response
+                        const match = text.match(/href="([^"]+)"/);
+                        if (match) {
+                            window.location.href = match[1];
+                        } else {
+                            window.location.reload();
+                        }
+                    } else if (text.includes('COMPANY_EXISTS:')) {
+                        // Extract company name from response
+                        const companyName = text.split('COMPANY_EXISTS:')[1].split('\n')[0];
+                        showConfirmationModal(companyName, formData);
+                    } else {
+                        // Other response - reload page
+                        window.location.reload();
+                    }
+                });
+            }
         } else {
-            // Check if response indicates company exists
-            response.text().then(text => {
-                if (text.includes('COMPANY_EXISTS:')) {
-                    // Extract company name from response
-                    const companyName = text.split('COMPANY_EXISTS:')[1].split('\n')[0];
-                    showConfirmationModal(companyName, formData);
-                } else {
-                    // Other response - reload page
-                    window.location.reload();
-                }
-            });
+            window.location.reload();
         }
     }).catch(error => {
         console.error('Upload error:', error);
@@ -199,10 +213,30 @@ function performUpload(formData, confirmed = false) {
     // Submit the form programmatically
     fetch(window.location.href, {
         method: 'POST',
-        body: formData
+        body: formData,
+        redirect: 'follow'  // Follow redirects automatically
     }).then(response => {
-        if (response.redirected) {
-            window.location.href = response.url;
+        // Check if we got a successful response (200-299) or redirect (300-399)
+        if (response.ok || response.status >= 300) {
+            // If it's a redirect, get the final URL
+            if (response.redirected) {
+                window.location.href = response.url;
+            } else {
+                // Check if response contains redirect information
+                response.text().then(text => {
+                    if (text.includes('redirected automatically to the target URL')) {
+                        // Extract the redirect URL from the response
+                        const match = text.match(/href="([^"]+)"/);
+                        if (match) {
+                            window.location.href = match[1];
+                        } else {
+                            window.location.reload();
+                        }
+                    } else {
+                        window.location.reload();
+                    }
+                });
+            }
         } else {
             window.location.reload();
         }

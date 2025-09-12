@@ -873,8 +873,52 @@ def download_report(company_id):
         
         for plan in plans:
             story.append(Paragraph(f"<b>{plan.section}</b>", styles['Normal']))
-            story.append(Paragraph(plan.plan_text, styles['Normal']))
-            story.append(Spacer(1, 6))
+            
+            # Convert markdown to PDF formatting
+            plan_text = plan.plan_text
+            
+            # Split into lines and process each line
+            lines = plan_text.split('\n')
+            for line in lines:
+                line = line.strip()
+                if not line:
+                    story.append(Spacer(1, 6))
+                    continue
+                
+                # Handle different markdown elements
+                if line.startswith('### '):
+                    # H3 heading
+                    heading_text = line[4:].strip()
+                    story.append(Paragraph(f"<b>{heading_text}</b>", styles['Heading3']))
+                elif line.startswith('#### '):
+                    # H4 heading
+                    heading_text = line[5:].strip()
+                    story.append(Paragraph(f"<b>{heading_text}</b>", styles['Heading4']))
+                elif line.startswith('**') and line.endswith('**'):
+                    # Bold text
+                    bold_text = line[2:-2].strip()
+                    story.append(Paragraph(f"<b>{bold_text}</b>", styles['Normal']))
+                elif line.startswith('- **'):
+                    # Bullet point with bold
+                    bullet_text = line[4:].strip()
+                    if bullet_text.endswith('**'):
+                        bullet_text = bullet_text[:-2]
+                        story.append(Paragraph(f"• <b>{bullet_text}</b>", styles['Normal']))
+                    else:
+                        story.append(Paragraph(f"• {bullet_text}", styles['Normal']))
+                elif line.startswith('- '):
+                    # Regular bullet point
+                    bullet_text = line[2:].strip()
+                    story.append(Paragraph(f"• {bullet_text}", styles['Normal']))
+                elif line.startswith('---'):
+                    # Horizontal rule - add extra space
+                    story.append(Spacer(1, 12))
+                else:
+                    # Regular paragraph
+                    if line:
+                        story.append(Paragraph(line, styles['Normal']))
+            
+            story.append(Spacer(1, 12))
     
     doc.build(story)
     
