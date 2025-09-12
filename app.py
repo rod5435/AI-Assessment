@@ -828,14 +828,20 @@ def download_report(company_id):
         fontSize=16,
         spaceAfter=20
     )
-    story.append(Paragraph(f"Overall AI Score: {overall_score:.1f}/10", overall_style))
+    if overall_score is not None:
+        story.append(Paragraph(f"Overall AI Score: {overall_score:.1f}/10", overall_style))
+    else:
+        story.append(Paragraph("Overall AI Score: N/A", overall_style))
     story.append(Spacer(1, 12))
     
     # Section Scores Table
     section_data_table = [['Section', 'Score']]
     for section in sections:
         score = section_data[section]['score']
-        section_data_table.append([section, f"{score:.1f}/10" if score else "N/A"])
+        if score is not None:
+            section_data_table.append([section, f"{score:.1f}/10"])
+        else:
+            section_data_table.append([section, "N/A"])
     
     section_table = Table(section_data_table, colWidths=[4*inch, 1*inch])
     section_table.setStyle(TableStyle([
