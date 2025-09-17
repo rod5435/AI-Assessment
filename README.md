@@ -126,22 +126,38 @@ Section,Question,Answer
 Section 1: Company Profile & Strategic Alignment,Company Name,Acme Corporation
 Section 1: Company Profile & Strategic Alignment,Annual Revenue,$25M - $50M
 Section 1: Company Profile & Strategic Alignment,Number of Employees,150-300
+Section 1: Company Profile & Strategic Alignment,Company Type: Basic, Financial Transaction Services, Healthcare, Technology & Government,Technology & Government
 Section 1: Company Profile & Strategic Alignment,Primary NAICS Codes,541330
 ...
 ```
 
 **Required Fields:**
 - **Company Name**: Must be in Section 1
+- **Company Type**: Must be one of the supported types (see below)
 - **Annual Revenue**: Automatically extracted and displayed on dashboard
 - **Number of Employees**: Automatically extracted and displayed on dashboard
+
+**Company Type Options:**
+- **Basic**: General business operations and AI integration
+- **Financial Transaction Services (FS/FTS)**: Financial services, banking, payment processing
+- **Healthcare**: Healthcare providers, medical technology, health services
+- **Technology & Government (T&G)**: Government contractors, technology companies serving government
+
+**Backward Compatibility:**
+The application supports both new and legacy Company Type question formats:
+- **New Format**: `Company Type: Basic, Financial Transaction Services, Healthcare, Technology & Government`
+- **Legacy Format**: `Company Type: GovCon Healthcare Finance or Industrial` (still supported)
+- **Abbreviations**: FS, FTS, and T&G are automatically recognized and mapped to full names
 
 ### Assessment Sections
 1. **Company Profile & Strategic Alignment**: Strategic clarity, executive sponsorship, AI roadmap, investment approach
 2. **AI Capabilities & Technical Maturity**: AI/ML capabilities, talent, tooling, lifecycle practices, personal AI usage
 3. **Industry-Specific Section 3** (varies by company type):
-   - **Government Contracting**: Government AI Integration & Contract Performance
+   - **Basic**: AI Integration & Business Operations
+   - **Financial Transaction Services (FS/FTS)**: AI Integration & Financial Services Delivery
    - **Healthcare**: AI Adoption & Compliance in Healthcare Settings  
-   - **Finance**: AI Integration & Financial Services Delivery
+   - **Technology & Government (T&G)**: Government AI Integration & Contract Performance
+   - **Legacy Support**: GovCon, Finance, Industrial (backward compatibility)
 4. **Partnerships, Ecosystem & Industry Engagement**: Cloud partnerships, academic collaboration, industry partnerships
 5. **AI Talent, Culture & Organizational Readiness**: AI roles, training, ethics, internal AI usage, business development integration
 6. **Future Readiness & Differentiators**: Emerging AI capabilities, competitive advantages, scaling challenges *(Not scored)*
@@ -263,6 +279,13 @@ For support and questions:
 - [ ] API for external integrations
 
 ## 🎉 Recent Updates
+
+### Version 2.1.0 - Enhanced Company Type Support & Backward Compatibility
+- **New Company Type Options**: Updated to Basic, Financial Transaction Services, Healthcare, Technology & Government
+- **Abbreviation Support**: FS, FTS, and T&G abbreviations automatically recognized
+- **Backward Compatibility**: Legacy Company Type formats (GovCon, Healthcare, Finance, Industrial) still supported
+- **Enhanced Section Mapping**: New company types properly mapped to industry-specific Section 3 content
+- **Seamless Migration**: Existing data imports without issues using new or old formats
 
 ### Version 2.0.0 - Multi-Industry AI Assessment Platform
 - **Industry-Specific Assessments**: Support for Government Contracting, Healthcare, Finance, and Industrial companies

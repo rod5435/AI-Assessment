@@ -53,7 +53,7 @@ class Company(db.Model):
     name = db.Column(db.String(200), nullable=False)
     annual_revenue = db.Column(db.String(100))
     employee_count = db.Column(db.String(100))
-    company_type = db.Column(db.String(100))  # GovCon, Healthcare, Finance, Industrial
+    company_type = db.Column(db.String(100))  # Basic, FS/FTS, Healthcare, T&G (or legacy: GovCon, Healthcare, Finance, Industrial)
     naics_codes = db.Column(db.String(200))   # Primary NAICS Codes
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
     updated_at = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
@@ -110,9 +110,13 @@ def get_company_sections(company_id):
     # Add industry-specific Section 3
     if company.company_type == 'Healthcare':
         base_sections.insert(2, 'Section 3: AI Adoption & Compliance in Healthcare Settings')
-    elif company.company_type == 'Finance':
+    elif company.company_type in ['Finance', 'FS', 'FTS', 'Financial Transaction Services']:
         base_sections.insert(2, 'Section 3: AI Integration & Financial Services Delivery')
-    else:  # Default to GovCon
+    elif company.company_type in ['Technology & Government', 'T&G']:
+        base_sections.insert(2, 'Section 3: Government AI Integration & Contract Performance')
+    elif company.company_type == 'Basic':
+        base_sections.insert(2, 'Section 3: AI Integration & Business Operations')
+    else:  # Default to GovCon for backward compatibility
         base_sections.insert(2, 'Section 3: Government AI Integration & Contract Performance')
     
     return base_sections
@@ -487,7 +491,11 @@ def upload_csv():
                 if not employees_row.empty:
                     employee_count = employees_row.iloc[0]['Answer']
                 
+                # Handle both old and new Company Type question formats
                 company_type_row = df[df['Question'] == 'Company Type: GovCon Healthcare Finance or Industrial']
+                if company_type_row.empty:
+                    company_type_row = df[df['Question'] == 'Company Type: Basic, Financial Transaction Services, Healthcare, Technology & Government']
+                
                 if not company_type_row.empty:
                     company_type = company_type_row.iloc[0]['Answer']
                 
@@ -671,7 +679,7 @@ def download_template():
         ['Section 1: Company Profile & Strategic Alignment', 'Primary NAICS Codes (Only GovCon)', ''],
         ['Section 1: Company Profile & Strategic Alignment', 'Revenue', ''],
         ['Section 1: Company Profile & Strategic Alignment', 'Number of Employees', ''],
-        ['Section 1: Company Profile & Strategic Alignment', 'Company Type: GovCon, Healthcare, Finance or Industrial', ''],
+        ['Section 1: Company Profile & Strategic Alignment', 'Company Type: Basic, Financial Transaction Services, Healthcare, Technology & Government', ''],
         ['Section 1: Company Profile & Strategic Alignment', 'What is your company\'s overall mission and how does AI fit into it?', ''],
         ['Section 1: Company Profile & Strategic Alignment', 'Do you have a formal AI strategy or roadmap? If yes, please provide details or documents.', ''],
         ['Section 1: Company Profile & Strategic Alignment', 'Which of the following best describes your AI posture?', ''],
